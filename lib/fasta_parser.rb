@@ -24,22 +24,32 @@ class FastaParser
   end
   
   def check_sym
-    @f = File.open(@input_file, "r")
-    first_sym = @f.each_char.to_a
+    f = File.open(@input_file, "r")
+    first_sym = f.each_char.to_a
     unless first_sym[0] == ">"
       puts "Usage: Not a fasta file!"
       return false
     end
       return true
+    f.close
   end
   
-  def get_first_entry 
+  def get_accession
+    f = File.open(@input_file, "r")
     
+  end
+  
+  def get_definition
+  
+  end
+  
+  def get_sequence
+  
   end
   
 end
 
-p = Parser.new(input_file = ARGV[0])
-p.check_arg
-p.check_if_fasta
-p.check_sym
+#p = FastaParser.new(input_file = ARGV[0])
+#p.check_arg
+#p.check_if_fasta
+#p.check_sym
