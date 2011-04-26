@@ -30,11 +30,12 @@ class FastaParser
     @fasta_is_open = File.open(@input_file, "r")
     first_sym = @fasta_is_open.each_char.to_a
     unless first_sym[0] == ">"
-      puts "Usage: Not a fasta file!"
+      puts "Usage: Not a FASTA file!"
       exit
       return false
     end
       return true
+    @fasta_is_open.close
   end
   
   def get_accession
@@ -42,6 +43,7 @@ class FastaParser
     array = @fasta_is_open.to_a
     accession = array[0].split(/[|]/)[3]
     return true
+    @fasta_is_open.close
   end
   
   def get_definition
@@ -50,6 +52,7 @@ class FastaParser
     d = array[0].split(/[|]/)[4]
     definition = d.strip
     return true
+    @fasta_is_open.close
   end
   
   def get_sequence

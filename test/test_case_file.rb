@@ -27,7 +27,15 @@ class TestFasta < Test::Unit::TestCase
     f = File.open("test/test.fasta","r")
     array = f.to_a
     accession = array[0].split(/[|]/)[3]
+    assert_equal("NM_2005745.3Acc1", accession)    
+    accession = ''
+    array.each do |el|
+      if el =~ /[|]/
+        accession += el.split(/[|]/)[3]
+      end
+    end
     assert_equal("NM_2005745.3Acc1", accession)
+
   end
   
   # checks definition for first entry
