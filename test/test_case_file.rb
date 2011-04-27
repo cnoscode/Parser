@@ -14,9 +14,8 @@ class TestFasta < Test::Unit::TestCase
   end
   
   def test_sym
-    f = File.open("test/test.fasta", "r")
-    first_sym = f.each_char.to_a
-    assert_equal(">", first_sym[0])
+    p = FastaParser.new("test/test.fasta")
+    assert(p.check_sym == true)
   end
   
   # checks accession for first entry
@@ -27,22 +26,11 @@ class TestFasta < Test::Unit::TestCase
     f = File.open("test/test.fasta","r")
     array = f.to_a
     accession = array[0].split(/[|]/)[3]
-    assert_equal("NM_2005745.3Acc1", accession)    
-    accession = ''
-    array.each do |el|
-      if el =~ /[|]/
-        accession += el.split(/[|]/)[3]
-      end
-    end
     assert_equal("NM_2005745.3Acc1", accession)
-
   end
   
   # checks definition for first entry
-  def test_definition
-    p = FastaParser.new("test/test.fasta")
-    assert(p.get_definition == true) # dummmy test
-    
+  def test_definition    
     f = File.open("test/test.fasta","r")
     array = f.to_a
     d = array[0].split(/[|]/)[4]
