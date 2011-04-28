@@ -29,8 +29,8 @@ class FastaParser
   
   def check_sym
     @fasta_is_open = File.open(@input_file, "r")
-    content = @fasta_is_open.read(1)
-    unless content == ">"
+    symbol = @fasta_is_open.read(1)
+    unless symbol == ">"
       puts "Usage: Not a FASTA file!"
       exit
       return false
@@ -53,10 +53,6 @@ class FastaParser
     definition = d.strip
     return true
     @fasta_is_open.close
-  end
-  
-  def get_sequence
-    
   end
   
 end
