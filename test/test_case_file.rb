@@ -20,23 +20,19 @@ class TestFasta < Test::Unit::TestCase
   
   def test_read_file
 
-    f = File.open("test/test.fasta", "r")
-    #e = f.enum_for(:each)
-    #e.each_slice(2) do |buf1,buf2|
-    #  p "Buffer 1: #{buf1}"
-    #  p "Buffer 2: #{buf2}"
-    #end
-    $/ = "\n\n"
-    f.each do |buf|
-      buffer = buf.sub(/\n+ \z/xms, "")
-      p "Content in buffer: #{buffer}"
-      accession = buffer.split(/[|]/)[3]
-      p "Accesion: #{accession}"
-        if f.eof? 
-          puts "End of file."
-        end
+    f = File.open("test/rabbit.fasta", "r")
+    new_file = File.new("test/results.txt","w")
+    buf_ctr = 0
+    f.each(sep = "\n\n") do |new_lines|
+      buffer = ''
+      lines = new_lines.split("\n")
+      buffer << lines.shift << "\n"
+    
+      lines.each do |line|
+        buffer << line
+      end
+      new_file.puts "Entry #{buf_ctr += 1}: #{buffer}"
     end
-    p "Cursor position: #{f.pos}"
   end
 =begin  
   # checks accession for first entry
@@ -72,4 +68,6 @@ class TestFasta < Test::Unit::TestCase
     assert_equal("AGCTCGGGGGCTCTAGCGATTTAAGGAGCGATGCGATCGAGCTGACCGTCGCGAAGGAGCGGTGAGGGAGAGGAGAGAGGA", sequence)
   end
 =end
+
+  
 end
