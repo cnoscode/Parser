@@ -21,23 +21,24 @@ class TestFasta < Test::Unit::TestCase
   def test_read_file
 
     f = File.open("test/test.fasta", "r")
-    buffer = Hash.new{|key, value| key[value]= []}
-    buff_key = 0
-    max_buff_len = 3
-  
-    f.each_line do |line|
-      if buffer[buff_key].length == max_buff_len
-        buff_key +=1
-        buffer[buff_key] << line.chomp
-      else
-        buffer[buff_key] << line.chomp
-      end
+    #e = f.enum_for(:each)
+    #e.each_slice(2) do |buf1,buf2|
+    #  p "Buffer 1: #{buf1}"
+    #  p "Buffer 2: #{buf2}"
+    #end
+    $/ = "\n\n"
+    f.each do |buf|
+      buffer = buf.sub(/\n+ \z/xms, "")
+      p "Content in buffer: #{buffer}"
+      accession = buffer.split(/[|]/)[3]
+      p "Accesion: #{accession}"
+        if f.eof? 
+          puts "End of file."
+        end
     end
-    assert_equal([">gi|329299107|ref|NM_2005745.3Acc1| Def1 zgc:65895 (zgc:65895), mRNA",
- "AGCTCGGGGGCTCTAGCGATTTAAGGAGCGATGCGATCGAGCTGACCGTCGCG",
- ""], buffer[0])
+    p "Cursor position: #{f.pos}"
   end
-  
+=begin  
   # checks accession for first entry
   def test_accession
     p = FastaParser.new("test/test.fasta")
@@ -70,9 +71,5 @@ class TestFasta < Test::Unit::TestCase
     end
     assert_equal("AGCTCGGGGGCTCTAGCGATTTAAGGAGCGATGCGATCGAGCTGACCGTCGCGAAGGAGCGGTGAGGGAGAGGAGAGAGGA", sequence)
   end
-  
-  def test_entry
-
-  end
-  
+=end
 end
