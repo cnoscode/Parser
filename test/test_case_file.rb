@@ -29,14 +29,12 @@ class TestFasta < Test::Unit::TestCase
         buffer = ''					
         buffer << line			
       else
-        buffer << line.sub(/ \n+ \z /xms, '')	
+        buffer << line.sub(/\n+\z/, '')	
       end
     end
-    puts buffer
+    puts buffer # last entry
     puts "Entries: #{entry}"
   end
-
-  
   
 =begin  
   # checks accession for first entry

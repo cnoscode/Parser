@@ -16,11 +16,7 @@ class FastaParser
     end
       return true
   end
-  
-  def parse_entry
     
-  end
-  
   def check_sym
     @fasta_is_open = File.open(@input_file, "r")
     symbol = @fasta_is_open.read(1)
@@ -30,6 +26,10 @@ class FastaParser
       return false
     end
       return true
+  end
+  
+  def read_file
+  
   end
   
   def get_accession
