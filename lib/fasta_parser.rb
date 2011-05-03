@@ -17,14 +17,8 @@ class FastaParser
       return true
   end
   
-  def check_if_fasta
-    unless @input_file.downcase[-6..-1] == ".fasta"
-    #File.exists?(@input)
-      puts "Usage: File needs '.fasta' extension!"
-      exit
-      return false
-    end
-      return true
+  def parse_entry
+    
   end
   
   def check_sym

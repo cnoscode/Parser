@@ -8,32 +8,36 @@ class TestFasta < Test::Unit::TestCase
     assert(p.check_arg == true)
   end
   
-  def test_file
-    p = FastaParser.new("test/test.fasta")
-    assert(p.check_if_fasta == true)
-  end
-  
   def test_sym
     p = FastaParser.new("test/test.fasta")
     assert(p.check_sym == true)
   end
   
   def test_read_file
-
-    f = File.open("test/rabbit.fasta", "r")
-    new_file = File.new("test/results.txt","w")
-    buf_ctr = 0
-    f.each(sep = "\n\n") do |new_lines|
-      buffer = ''
-      lines = new_lines.split("\n")
-      buffer << lines.shift << "\n"
+    f = File.open("test/test.fasta", "r")
+    buffer = ''
+    index = 0
+    entry = 0
     
-      lines.each do |line|
-        buffer << line
+    f.each do |line|	
+      if line[0,1] == ">"
+        entry += 1
+        if buffer != ''															
+          puts buffer
+          index += 1	
+        end									
+        buffer = ''					
+        buffer << line			
+      else
+        buffer << line.sub(/ \n+ \z /xms, '')	
       end
-      new_file.puts "Entry #{buf_ctr += 1}: #{buffer}"
     end
+    puts buffer
+    puts "Entries: #{entry}"
   end
+
+  
+  
 =begin  
   # checks accession for first entry
   def test_accession
