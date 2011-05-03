@@ -1,15 +1,11 @@
-
 class FastaParser
   VERSION = "0.0.1"
-  class Entry
-    #
-  end
-
+  
   attr_reader :input_file
 
   def initialize input_file
     @input_file = File.open(input_file, "r")
-    @index_position = index_fasta_file_headers()
+    #@index_position = index_fasta_file_headers()
   end
 
   # def check_arg
@@ -18,7 +14,7 @@ class FastaParser
   #      exit
   #      return false
   #    end
-  #      return truev
+  #      return true
   #  end
 
   def read_next_entry
@@ -38,6 +34,46 @@ class FastaParser
     end
     entry
   end
+  
+  def index_fasta_file_headers()
+    index_count = 0
+    index = []
+    @input_file.readline.chomp
+    tmp_pos = @input_file.pos
+    
+    @input_file.each do |ln|
+      until @input_file.eof?
+        if ln =~ /^>/
+          @input_file.pos = tmp_pos
+          index.push(@input_file.pos)
+          index_count += 1
+          break
+        else
+          tmp_pos = @input_file.pos
+        end
+      end
+    end
+    
+  end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   def check_sym
     symbol = @input_file.read(1)
@@ -48,8 +84,6 @@ class FastaParser
     end
       return true
   end
-
-
 
   def get_accession
     array = @input_file.to_a
