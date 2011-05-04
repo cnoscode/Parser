@@ -21,7 +21,13 @@ class TestFasta < Test::Unit::TestCase
     assert_equal(test_entry[1], entry[1])
   end
 
-
+  def test_index
+    f = FastaParser.new("test/test.fasta")
+    test_file_pos = [0, 123, 287]
+    pos_index = f.index_fasta_file_headers
+    assert_equal(test_file_pos, pos_index)
+  end
+  
 =begin
   # checks accession for first entry
   def test_accession

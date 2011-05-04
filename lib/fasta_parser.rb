@@ -36,26 +36,23 @@ class FastaParser
   end
   
   def index_fasta_file_headers()
-    index_count = 0
-    index = []
-    @input_file.readline.chomp
+    pos_index = []
+    
+    # beginning position of file is 0
     tmp_pos = @input_file.pos
     
     @input_file.each do |ln|
-      until @input_file.eof?
-        if ln =~ /^>/
-          @input_file.pos = tmp_pos
-          index.push(@input_file.pos)
-          index_count += 1
-          break
-        else
-          tmp_pos = @input_file.pos
-        end
+      if ln =~ /^>/ 
+        @input_file.pos = tmp_pos
+        pos_index.push(@input_file.pos)
+        @input_file.readline.chomp
+        tmp_pos = @input_file.pos        
+      else
+        tmp_pos = @input_file.pos
       end
     end
-    
+    pos_index
   end
-
 
 
 
