@@ -2,7 +2,7 @@ require 'test/unit'
 require 'fasta_parser'
 
 class TestFasta < Test::Unit::TestCase
-
+=begin
   def test_create
     p = FastaParser.new("test/test.fasta")
     assert_kind_of(FastaParser, p)
@@ -12,13 +12,12 @@ class TestFasta < Test::Unit::TestCase
     p = FastaParser.new("test/test.fasta")
     assert(p.check_sym)
   end
-
+=end
   def test_read_entry
     f = FastaParser.new("test/test.fasta")
     test_entry = [">gi|329299107|ref|NM_2005745.3Acc1| Def1 zgc:65895 (zgc:65895), mRNA","AGCTCGGGGGCTCTAGCGATTTAAGGAGCGATGCGATCGAGCTGACCGTCGCG"]
-    entry = f.read_next_entry
-    assert_equal(test_entry, entry)
-    #assert_equal(test_entry[1], entry[1])
+    entry = f.read_next_entry(0)
+    assert_equal(test_entry[0], entry[0])
   end
 
   def test_index
@@ -29,7 +28,9 @@ class TestFasta < Test::Unit::TestCase
   end
   
   def test_pass_pos
-  
+    f = FastaParser.new("test/test.fasta")
+    second_entry = [">gi|329299107|ref|NM_2342343.3Acc2| Def2 zgc:65895 (zgc:65895), mRNA", "GTCGCTGGGTCGAAAAGTGGTGCTATATCGCGGCTCGCGTCGATGTCGCGATGCGTGCGCGCGAGAGCGCGCTATGATGAAAGGATGAGAGAG"]
+    assert_equal(second_entry, f.read_query(1) )
   end
   
   def test_entry_count

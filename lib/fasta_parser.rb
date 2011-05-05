@@ -6,7 +6,7 @@ class FastaParser
   def initialize input_file
     @input_file = File.open(input_file, "r")
     @pos_index = []
-    #@index_position = index_fasta_file_headers()
+    #index_fasta_file_headers()
   end
 
   # def check_arg
@@ -18,9 +18,11 @@ class FastaParser
   #      return true
   #  end
   
-  def read_next_entry()
+  def read_next_entry(n)
     entry = [nil,""]
+    @input_file.pos = n
     entry[0] = @input_file.readline.chomp
+    
     
     tmp_pos = @input_file.pos
     # read in sequence
@@ -37,8 +39,8 @@ class FastaParser
   end
 
   def index_fasta_file_headers()    
-    #pos_index = []
-    # beginning position of file is 0
+
+    # at file position 0
     tmp_pos = @input_file.pos
     
     @input_file.each do |ln|
@@ -54,16 +56,15 @@ class FastaParser
     @pos_index
   end       
   
-  def read_in_index#(*@pos_index)
-    n = @pos_index[0]
+  def read_query(n)
     read_next_entry(n)
   end
-  
+
   def entry_count
     return @pos_index.length
   end
   
-  
+=begin  
   def check_sym
     symbol = @input_file.read(1)
     unless symbol == ">"
@@ -89,7 +90,7 @@ class FastaParser
     return true
     @fasta_is_open.close
   end
-
+=end
 end
 
 #p = FastaParser.new(input_file = ARGV[0])
