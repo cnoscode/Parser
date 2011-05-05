@@ -17,8 +17,8 @@ class TestFasta < Test::Unit::TestCase
     f = FastaParser.new("test/test.fasta")
     test_entry = [">gi|329299107|ref|NM_2005745.3Acc1| Def1 zgc:65895 (zgc:65895), mRNA","AGCTCGGGGGCTCTAGCGATTTAAGGAGCGATGCGATCGAGCTGACCGTCGCG"]
     entry = f.read_next_entry
-    assert_equal(test_entry[0], entry[0])
-    assert_equal(test_entry[1], entry[1])
+    assert_equal(test_entry, entry)
+    #assert_equal(test_entry[1], entry[1])
   end
 
   def test_index
@@ -28,6 +28,19 @@ class TestFasta < Test::Unit::TestCase
     assert_equal(test_file_pos, pos_index)
   end
   
+  def test_pass_pos
+  
+  end
+  
+  def test_entry_count
+    f = FastaParser.new("test/test.fasta")
+    test_count = 3 
+    f.index_fasta_file_headers
+    actual_num = f.entry_count
+    assert_equal(test_count, actual_num)
+  end
+  
+    
 =begin
   # checks accession for first entry
   def test_accession
