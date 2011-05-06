@@ -2,22 +2,22 @@ require 'test/unit'
 require 'fasta_parser'
 
 class TestFasta < Test::Unit::TestCase
-=begin
+
   def test_create
-    p = FastaParser.new("test/test.fasta")
-    assert_kind_of(FastaParser, p)
+    f = FastaParser.new("test/test.fasta")
+    assert_kind_of(FastaParser, f)
   end
 
   def test_sym
-    p = FastaParser.new("test/test.fasta")
-    assert(p.check_sym)
+    f = FastaParser.new("test/test.fasta")
+    assert(f.check_sym)
   end
-=end
+
   def test_read_entry
     f = FastaParser.new("test/test.fasta")
     test_entry = [">gi|329299107|ref|NM_2005745.3Acc1| Def1 zgc:65895 (zgc:65895), mRNA","AGCTCGGGGGCTCTAGCGATTTAAGGAGCGATGCGATCGAGCTGACCGTCGCG"]
     entry = f.read_next_entry(0)
-    assert_equal(test_entry[0], entry[0])
+    assert_equal(test_entry, entry)
   end
 
   def test_index
@@ -27,55 +27,42 @@ class TestFasta < Test::Unit::TestCase
     assert_equal(test_file_pos, pos_index)
   end
   
-  def test_pass_pos
+  def test_second_entry # passing position
     f = FastaParser.new("test/test.fasta")
     second_entry = [">gi|329299107|ref|NM_2342343.3Acc2| Def2 zgc:65895 (zgc:65895), mRNA", "GTCGCTGGGTCGAAAAGTGGTGCTATATCGCGGCTCGCGTCGATGTCGCGATGCGTGCGCGCGAGAGCGCGCTATGATGAAAGGATGAGAGAG"]
-    assert_equal(second_entry, f.read_query(1) )
+    assert_equal(second_entry,f.read_query(1))
   end
   
   def test_entry_count
     f = FastaParser.new("test/test.fasta")
     test_count = 3 
-    f.index_fasta_file_headers
     actual_num = f.entry_count
     assert_equal(test_count, actual_num)
   end
-  
-    
-=begin
-  # checks accession for first entry
+      
+  # checks accession 
   def test_accession
-    p = FastaParser.new("test/test.fasta")
-    assert(p.get_accession == true)
-
-    f = File.open("test/test.fasta","r")
-    array = f.to_a
-    accession = array[0].split(/[|]/)[3]
-    assert_equal("NM_2005745.3Acc1", accession)
+    f = FastaParser.new("test/test.fasta")
+    test_accession = "NM_2005745.3Acc1"
+    accession = f.get_accession(0)
+    assert_equal(test_accession, accession)
   end
 
-  # checks definition for first entry
+  # checks definition 
   def test_definition
-    f = File.open("test/test.fasta","r")
-    array = f.to_a
-    d = array[0].split(/[|]/)[4]
-    definition = d.strip
-    assert_equal("Def1 zgc:65895 (zgc:65895), mRNA", definition)
+    f = FastaParser.new("test/test.fasta")
+    test_definition = "Def1 zgc:65895 (zgc:65895), mRNA"
+    definition = f.get_definition(0)
+    assert_equal(test_definition, definition)
   end
 
-  # checks sequence match (NOTE: only one entry in file)
+  # checks sequence
   def test_sequence
-    f = File.open("test/test_entry.fasta","r")
-    array = f.to_a
-    seq_with_newline = ''
-    sequence = ''
-    array.drop(1).each do |element|
-      seq_with_newline += element
-      sequence = seq_with_newline.delete("\n")
-    end
-    assert_equal("AGCTCGGGGGCTCTAGCGATTTAAGGAGCGATGCGATCGAGCTGACCGTCGCGAAGGAGCGGTGAGGGAGAGGAGAGAGGA", sequence)
+    f = FastaParser.new("test/test.fasta")
+    
+    
   end
-=end
+
 
 
 end
