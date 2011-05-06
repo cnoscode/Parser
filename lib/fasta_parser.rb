@@ -5,7 +5,7 @@ class FastaParser
 
   def initialize input_file
     @input_file = File.open(input_file, "r")
-    @entry = [nil,""]
+    #@entry = [nil,""]
     @pos_index = []
     index_fasta_file_headers()
   end
@@ -31,9 +31,11 @@ class FastaParser
     end
   end
   
-  def read_next_entry(n)
-    @input_file.pos = n
-    @entry[0] = @input_file.readline.chomp
+  def read_next_entry# (n)
+    #@input_file.pos = n
+    #@entry[0] = @input_file.readline.chomp
+    entry = [nil,""]
+    entry[0] = @input_file.readline.chomp
       
     tmp_pos = @input_file.pos
     # read in sequence
@@ -42,11 +44,12 @@ class FastaParser
         @input_file.pos = tmp_pos
         break
       else
-        @entry[1] += ln.chomp
+        #@entry[1] += ln.chomp
+        entry[1] += ln.chomp
         tmp_pos = @input_file.pos
       end
     end
-    return @entry
+    return entry
   end
 
   def index_fasta_file_headers()    
@@ -66,9 +69,11 @@ class FastaParser
     return @pos_index
   end       
   
-  def read_query(entry_num)
-    n = @pos_index[entry_num]
-    read_next_entry(n)
+  def read_query # read_query(entry_num)
+    #n = @pos_index[entry_num]
+    #@pos_index[entry_num]
+    #@pos_index
+    #read_next_entry(n)
   end
 
   def entry_count
@@ -77,15 +82,15 @@ class FastaParser
   
   def get_accession(entry_num)
     read_query(entry_num)
-    accession = @entry[0].split(/[|]/)[3]
-    return accession
+    #accession = @entry[0].split(/[|]/)[3]
+    #return accession
   end
 
   def get_definition(entry_num)
     read_query(entry_num)
-    d = @entry[0].split(/[|]/)[4]
-    definition = d.strip
-    return definition
+    #d = @entry[0].split(/[|]/)[4]
+    #definition = d.strip
+    #return definition
   end
   
   
