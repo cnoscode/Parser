@@ -1,6 +1,6 @@
 FASTA Parser
 
-The code attempts to parse information for a given FASTA file. 
+This code attempts to parse information for a given FASTA file. 
 
 The program will essentially read in the title, accession, definition and sequence for each entry of the FASTA file. 
 
