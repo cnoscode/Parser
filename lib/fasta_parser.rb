@@ -31,9 +31,7 @@ class FastaParser
     end
   end
   
-  def read_next_entry# (n)
-    #@input_file.pos = n
-    #@entry[0] = @input_file.readline.chomp
+  def read_next_entry
     entry = [nil,""]
     entry[0] = @input_file.readline.chomp
       
@@ -44,7 +42,6 @@ class FastaParser
         @input_file.pos = tmp_pos
         break
       else
-        #@entry[1] += ln.chomp
         entry[1] += ln.chomp
         tmp_pos = @input_file.pos
       end
@@ -80,8 +77,7 @@ class FastaParser
     return @pos_index.length
   end
   
-  def get_accession(entry_num)
-    read_query(entry_num)
+  def get_accession
     #accession = @entry[0].split(/[|]/)[3]
     #return accession
   end
