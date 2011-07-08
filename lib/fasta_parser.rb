@@ -40,8 +40,8 @@ class FastaParser
 		@curr_index = 0
 	end
 	
-	def entry(n=0)
-		
+	def entry(n=0)	
+	
 	end
 	
 	def next_entry()
