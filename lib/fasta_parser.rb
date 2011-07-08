@@ -4,12 +4,17 @@ class FastaParser
   attr_reader :input_file
 
   def initialize input_file
-    @input_file = File.open(input_file, "r")
+    @input_file = File.open(input_file)
     #@entry = [nil,""]
-    @pos_index = []
+    @index = []
+    @curr_index = 0
     index_fasta_file_headers()
   end
 
+	def open(input_file)
+		FastaParser.new(input_file)
+	end
+	
   def check_arg
     unless ARGV.length == 1
       puts "Usage: <ruby> <file.rb> <fasta_file>"
@@ -30,8 +35,16 @@ class FastaParser
       end
     end
   end
-  
-  def read_next_entry
+	
+	def rewind
+		@curr_index = 0
+	end
+	
+	def entry(n=0)
+		
+	end
+	
+	def next_entry()
     entry = [nil,""]
     entry[0] = @input_file.readline.chomp
       
@@ -49,6 +62,9 @@ class FastaParser
     return entry
   end
 
+
+#class Entry 
+  
   def index_fasta_file_headers()    
     # at position 0
     tmp_pos = @input_file.pos
@@ -56,41 +72,36 @@ class FastaParser
     @input_file.each do |ln|
       if ln =~ /^>/ 
         @input_file.pos = tmp_pos
-        @pos_index.push(@input_file.pos)
+        @index.push(@input_file.pos)
         @input_file.readline.chomp
         tmp_pos = @input_file.pos        
       else
         tmp_pos = @input_file.pos
       end
     end
-    return @pos_index
+    return @index
   end       
   
-  def read_query # read_query(entry_num)
-    #n = @pos_index[entry_num]
-    #@pos_index[entry_num]
-    #@pos_index
-    #read_next_entry(n)
-  end
-
-  def entry_count
-    return @pos_index.length
-  end
-  
-  def get_accession
+  def acc
     #accession = @entry[0].split(/[|]/)[3]
-    #return accession
+  end
+  
+  def gi 
+  
+  end
+  
+  def description
+  
+  end
+  
+  def seq
+  
+  end
+  
+  def to_s
+  
   end
 
-  def get_definition(entry_num)
-    read_query(entry_num)
-    #d = @entry[0].split(/[|]/)[4]
-    #definition = d.strip
-    #return definition
-  end
-  
-  
-  
 end
 
 #f = FastaParser.new(input_file = ARGV[0])
