@@ -42,22 +42,19 @@ class FastaParser
     @curr_index = 0
   end
   
-  def read_entry(n) 
-  	if n
-      @curr_index = n
-    end 
+  def entry(n)
+  	return nil if n.nil?
+		if n 
+			@curr_index = n
+		end
     #tmp_pos
-    self.pos = @index[@curr_index]   
-  end
-  
-  # returns specific entry 
-  def entry(n=nil)  
-    self.read_entry(n)
+    n = @index[@curr_index]
+    self.next_entry(n)
   end
   
   # returns next entry in file
-  def next_entry
-  	@fasta_file.pos = 0
+  def next_entry(n)
+  	@fasta_file.pos = n
     entry = [nil,""]
     entry[0] = @fasta_file.readline.chomp
       
@@ -73,6 +70,7 @@ class FastaParser
       end
     end
     return entry
+    return nil if eof?
   end
   
   # returns index of positions
@@ -91,7 +89,8 @@ class FastaParser
       end
     end
     return @index
-  end       
+  end    
+  
 end
 
 class Entry 
@@ -118,4 +117,4 @@ class Entry
 
 end
 
-#f = FastaParser.new(input_file = ARGV[0])
+f = FastaParser.new(input_file = ARGV[0])
