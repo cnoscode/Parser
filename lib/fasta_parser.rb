@@ -1,6 +1,6 @@
 class FastaParser
-	require 'fasta/entry'
-	
+  include Enumerable
+    
   VERSION = "0.0.1"
   
   attr_reader :fasta_file
@@ -18,22 +18,11 @@ class FastaParser
     FastaParser.new(fasta_file)
   end
   
-  def check_arg
-    unless ARGV.length == 1
-      puts "Usage: <ruby> <file.rb> <fasta_file>"
-      exit
-      return false
-    end
-      return true
-  end
-  
   def check_sym
     @fasta_file.each do |ln|
       if ln[0,1] == ">"
         return true
       else
-        puts "Usage: Not a FASTA file!"
-        exit
         return false
       end
     end
@@ -41,21 +30,18 @@ class FastaParser
   
   # rewinds to beginning index
   def rewind
-  	@curr_index = 0
+    @curr_index = 0
   end
   
-  def entry(n)
-		if n 
-			@curr_index = n
-		end
-    #tmp_pos
-    n = @index[@curr_index]
-    self.next_entry(n)
+  def read_entry(n)
+    @curr_index = n
+    self.pos = @index[@curr_index]
+    @curr_index += 1  
   end
   
   # returns next entry in file
-  def next_entry(n)
-  	@fasta_file.pos = n
+  def next_entry
+    # @fasta_file.pos = n
     entry = [nil,""]
     entry[0] = @fasta_file.readline.chomp
       
@@ -71,10 +57,22 @@ class FastaParser
       end
     end
     return entry
-    self.rewind # back to pos 0
   end
   
-  # returns index of positions
+  def each_entry
+    yield self.entry
+  end
+  
+  def entry(n)
+    Fasta::Entry.new(read_entry(n))
+  end
+  
+  def entry_count
+    return @index.length
+  end
+  
+  private
+  
   def index_headers()    
     # at position 0
     tmp_pos = @fasta_file.pos
@@ -89,27 +87,8 @@ class FastaParser
         tmp_pos = @fasta_file.pos
       end
     end
+    
     return @index
   end
   
-  def each_entry
-  	# at position 0
-  	self.rewind
-    tmp_pos = @fasta_file.pos
-    
-    @fasta_file.each do |entry|
-			@index.each do |pos|
-				self.next_entry(pos) # still in progress
-			end
-    end
-  end
-  
-  # returns number of entries
-  def entry_count
-  	return @index.length
-  end
-  
 end
-
-
-#f = FastaParser.new(input_file = ARGV[0])
