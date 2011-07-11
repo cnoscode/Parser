@@ -1,5 +1,6 @@
 require 'test/unit'
 require 'fasta_parser'
+require 'fasta/entry'
 
 class TestFasta < Test::Unit::TestCase
 
@@ -16,7 +17,7 @@ class TestFasta < Test::Unit::TestCase
   def test_read_entry
     f = FastaParser.new("test/test.fasta")
     test_entry = [">gi|329299107|ref|NM_2005745.3Acc1| Def1 zgc:65895 (zgc:65895), mRNA","AGCTCGGGGGCTCTAGCGATTTAAGGAGCGATGCGATCGAGCTGACCGTCGCG"]
-    entry = f.next_entry
+    entry = f.entry(0)
     assert_equal(test_entry, entry)
   end
 
@@ -27,29 +28,38 @@ class TestFasta < Test::Unit::TestCase
     assert_equal(test_file_pos, pos_index)
   end
   
-#  def test_entry_count
-#    f = FastaParser.new("test/test.fasta")
-#    test_count = 3 
-#    actual_num = f.entry_count
-#    assert_equal(test_count, actual_num)
-#  end
-      
-#   def test_accession
-#     f = FastaParser.new("test/test.fasta")
-#     test_accession = "NM_2005745.3Acc1"
-#     accession = f.get_accession(0)
-#     assert_equal(test_accession, accession)
-#   end
-
-#   def test_definition
-#     f = FastaParser.new("test/test.fasta")
-#     test_definition = "Def1 zgc:65895 (zgc:65895), mRNA"
-#     definition = f.get_definition(0)
-#     assert_equal(test_definition, definition)
-#   end
-# 
-#   def test_sequence
-#   	f = FastaParser.new("test/test.fasta")    
-#   end
+  def test_num_entries
+    f = FastaParser.new("test/test.fasta")
+		test_count = 3
+		actual_count = f.entry_count
+		assert_equal(test_count, actual_count)
+  end
+  
+  def test_desc
+  	e = Entry.new("test/test.fasta")
+    f = FastaParser.new("test/test.fasta")
+    entry = f.entry(0)
+    test_desc = "gi|329299107|ref|NM_2005745.3Acc1| Def1 zgc:65895 (zgc:65895), mRNA"
+    description = e.desc(entry)
+    assert_equal(test_desc, description)
+  end
+  
+  def test_acc
+    e = Entry.new("test/test.fasta")
+    f = FastaParser.new("test/test.fasta")
+    entry = f.entry(0)
+    test_acc = "NM_2005745.3Acc1"
+    accession = e.acc(entry)
+    assert_equal(test_acc, accession)
+  end
+  
+  def test_seq
+		e = Entry.new("test/test.fasta")
+    f = FastaParser.new("test/test.fasta")
+    entry = f.entry(0)
+    test_seq = "AGCTCGGGGGCTCTAGCGATTTAAGGAGCGATGCGATCGAGCTGACCGTCGCG"
+    sequence = e.seq(entry)
+    assert_equal(test_seq, sequence)
+  end
 
 end

@@ -1,4 +1,6 @@
 class FastaParser
+	require 'fasta/entry'
+	
   VERSION = "0.0.1"
   
   attr_reader :fasta_file
@@ -38,12 +40,10 @@ class FastaParser
   
   # rewinds to beginning index
   def rewind
-  	# self.rewind
     @curr_index = 0
   end
   
   def entry(n)
-  	return nil if n.nil?
 		if n 
 			@curr_index = n
 		end
@@ -70,7 +70,7 @@ class FastaParser
       end
     end
     return entry
-    return nil if eof?
+    self.rewind
   end
   
   # returns index of positions
@@ -89,32 +89,14 @@ class FastaParser
       end
     end
     return @index
-  end    
+  end
+  
+  # returns number of entries
+  def entry_count
+  	return @index.length
+  end
   
 end
 
-class Entry 
-  
-  def acc
-    #accession = @entry[0].split(/[|]/)[3]
-  end
-  
-  def gi 
-  
-  end
-  
-  def description
-  
-  end
-  
-  def seq
-  
-  end
-  
-  def to_s
-  
-  end
 
-end
-
-f = FastaParser.new(input_file = ARGV[0])
+#f = FastaParser.new(input_file = ARGV[0])
