@@ -94,19 +94,14 @@ class FastaParser
   
   def each_entry
   	# at position 0
+  	self.rewind
     tmp_pos = @fasta_file.pos
     
     @fasta_file.each do |entry|
-			if entry =~ /^>/
-        @fasta_file.pos = tmp_pos
-        @fasta_file.readline.chomp
-        @entry_index.push(entry)
-        tmp_pos = @fasta_file.pos              
-			else
-        tmp_pos = @fasta_file.pos				
+			@index.each do |pos|
+				self.next_entry(pos) # still in progress
 			end
     end
-    return @entry_index
   end
   
   # returns number of entries
