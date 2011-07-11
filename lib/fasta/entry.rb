@@ -3,11 +3,12 @@ class Entry
   
   attr_accessor :desc, :acc, :seq, :gi
   
-  def initialize entry
+  def initialize fasta_file
+  	FastaParser.new(fasta_file)
   	@desc = [] # entry[0]
   	@seq = [] # entry[1]
-  	@acc = ''
-  	@gi = ''
+  	@acc = ""
+  	@gi = ""
   end
   
   def desc(entry)	
@@ -20,14 +21,22 @@ class Entry
     return @acc
   end
   
+  def gi(entry)
+  	gi = entry[0].split(/[|]/)[1]
+  	@gi = gi.to_i
+  	return @gi
+  end
+  
   def seq(entry) 
   	@seq = entry[1]
   	return @seq
   end
 	
-	def to_s
-		# returns well formatted FASTA entry as a String
-		# >desc\nsequence\n
+	def to_s(entry)
+		entry.collect! {|e| e + "\n"}		
+		formatted_string = ""
+		entry.each {|a| formatted_string << "#{a.to_s}"}
+		return formatted_string
 	end
 	
 end

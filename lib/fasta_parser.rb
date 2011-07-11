@@ -9,6 +9,7 @@ class FastaParser
     @fasta_file = File.open(fasta_file)
     @index = []
     @curr_index = 0
+    @entry_index = []
     index_headers()
   end
   
@@ -40,7 +41,7 @@ class FastaParser
   
   # rewinds to beginning index
   def rewind
-    @curr_index = 0
+  	@curr_index = 0
   end
   
   def entry(n)
@@ -70,7 +71,7 @@ class FastaParser
       end
     end
     return entry
-    self.rewind
+    self.rewind # back to pos 0
   end
   
   # returns index of positions
@@ -89,6 +90,23 @@ class FastaParser
       end
     end
     return @index
+  end
+  
+  def each_entry
+  	# at position 0
+    tmp_pos = @fasta_file.pos
+    
+    @fasta_file.each do |entry|
+			if entry =~ /^>/
+        @fasta_file.pos = tmp_pos
+        @fasta_file.readline.chomp
+        @entry_index.push(entry)
+        tmp_pos = @fasta_file.pos              
+			else
+        tmp_pos = @fasta_file.pos				
+			end
+    end
+    return @entry_index
   end
   
   # returns number of entries

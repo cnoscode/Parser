@@ -20,12 +20,26 @@ class TestFasta < Test::Unit::TestCase
     entry = f.entry(0)
     assert_equal(test_entry, entry)
   end
+  
+  def test_each_entry
+    f = FastaParser.new("test/test.fasta")
+		test_entry = "h"
+		entry = f.each_entry
+		assert_equal(test_entry, entry)
+  end
 
   def test_index
     f = FastaParser.new("test/test.fasta")
     test_file_pos = [0, 123, 287]
     pos_index = f.index_headers()
     assert_equal(test_file_pos, pos_index)
+  end
+  
+  def test_rewind
+    f = FastaParser.new("test/test.fasta")
+  	test_pos = 0
+  	actual_pos = f.rewind
+  	assert_equal(test_pos, actual_pos)
   end
   
   def test_num_entries
@@ -53,6 +67,15 @@ class TestFasta < Test::Unit::TestCase
     assert_equal(test_acc, accession)
   end
   
+  def test_gi
+    e = Entry.new("test/test.fasta")
+    f = FastaParser.new("test/test.fasta")
+    entry = f.entry(0)
+    test_gi = 329299107
+    actual_gi = e.gi(entry)
+    assert_equal(test_gi, actual_gi)
+  end
+  
   def test_seq
 		e = Entry.new("test/test.fasta")
     f = FastaParser.new("test/test.fasta")
@@ -60,6 +83,15 @@ class TestFasta < Test::Unit::TestCase
     test_seq = "AGCTCGGGGGCTCTAGCGATTTAAGGAGCGATGCGATCGAGCTGACCGTCGCG"
     sequence = e.seq(entry)
     assert_equal(test_seq, sequence)
+  end
+  
+  def test_formatted_string
+  	e = Entry.new("test/test.fasta")
+  	f = FastaParser.new("test/test.fasta")
+  	entry = f.entry(0)
+  	test_string = ">gi|329299107|ref|NM_2005745.3Acc1| Def1 zgc:65895 (zgc:65895), mRNA\nAGCTCGGGGGCTCTAGCGATTTAAGGAGCGATGCGATCGAGCTGACCGTCGCG\n"
+  	actual_string = e.to_s(entry)
+  	assert_equal(test_string, actual_string)
   end
 
 end
