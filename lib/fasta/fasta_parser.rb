@@ -15,7 +15,7 @@ module Fasta
     
     # returns instance of class
     def open(fasta_file)
-      Parser.new(fasta_file)
+      Fasta::Parser.new(fasta_file)
     end
     
     def check_sym
@@ -40,15 +40,12 @@ module Fasta
       
       # subtract new current position from file position to get length  
       length = @index[@curr_index] - @fasta_file.pos 
-      @fasta_file.read(length)
+      return @fasta_file.read(length)
     end
     
     # returns next entry in file
     def next_entry  
-      entry = [nil,""]
-      if @fasta_file.eof?
-        self.rewind
-      end
+      entry = [nil,""]     
       entry[0] = @fasta_file.readline.chomp
         
       tmp_pos = @fasta_file.pos
@@ -62,25 +59,26 @@ module Fasta
           tmp_pos = @fasta_file.pos
         end
       end
+      # rescue EOFError
       return entry
+      #return nil if entry.nil?
     end
     
     def each_entry
       while !@fasta_file.eof
-        yield self.entry() if block_given?
+        yield self.entry()
       end
     end
     
     def entry(n)
-      Fasta::Parser::Entry.new(read_entry(n))
+      Fasta::Parser::Entry.new(self.read_entry(n))
     end
     
     def entry_count
       return @index.length
     end
     
-    private
-    
+    private    
     def index_positions()    
       # at position 0
       tmp_pos = @fasta_file.pos
@@ -94,7 +92,8 @@ module Fasta
         else
           tmp_pos = @fasta_file.pos
         end
-      end     
+      end
+      # self.rewind     
       return @index
     end
     
