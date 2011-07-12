@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require 'fasta_parser'
+require 'fasta/parser/version'
 
 Gem::Specification.new do |s|
   s.name        = "fasta_parser"
-  s.version     =  FastaParser::VERSION
+  s.version     =  Fasta::Parser::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Cyril Jose"]
   s.email       = ["cyril_jose@ymail.com"]
