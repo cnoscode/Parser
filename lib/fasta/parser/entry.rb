@@ -6,9 +6,9 @@ module Fasta
       
       def initialize(entry)
         @gi = ""
-        @desc = ""
+        @desc = []
         @acc = ""
-        @seq = ""
+        @seq = []
         parse(entry)
       end
       
@@ -21,7 +21,10 @@ module Fasta
       
       private
       def parse(entry)
-      
+      	@gi = entry.split(/[|]/)[1]
+      	@acc = entry.split(/[|]/)[3]
+      	# @seq 
+       	@desc = entry.readline.chomp       	
       end
       
     end

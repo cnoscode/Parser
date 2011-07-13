@@ -1,6 +1,6 @@
 module Fasta
   class Parser
-    #require 'fasta/parser/entry'
+    require 'lib/fasta/parser/entry'
       
     VERSION = "0.0.1"
     
@@ -10,7 +10,7 @@ module Fasta
       @fasta_file = File.open(fasta_file)
       @index = []
       @curr_index = 0
-      index_positions()
+      index_headers()
     end
     
     # returns instance of class
@@ -35,16 +35,27 @@ module Fasta
     
     def read_entry(n)
       @curr_index = n
-      @fasta_file.pos = @index[@curr_index]
-      @curr_index += 1
+      length = ""
       
-      # subtract new current position from file position to get length  
-      length = @index[@curr_index] - @fasta_file.pos 
-      return @fasta_file.read(length)
+      return nil if @index[@curr_index].nil?
+   
+      @fasta_file.pos = @index[@curr_index]
+      @curr_index += 1      
+                     
+      if @index[@curr_index].nil?
+      	entry = @fasta_file.read until @fasta_file.eof
+      else
+      	length = @index[@curr_index] - @fasta_file.pos
+      	entry = @fasta_file.read(length)
+      end
+       
+      return entry
     end
     
     # returns next entry in file
-    def next_entry  
+    def next_entry
+    	return nil if @fasta_file.eof?
+
       entry = [nil,""]     
       entry[0] = @fasta_file.readline.chomp
         
@@ -59,14 +70,14 @@ module Fasta
           tmp_pos = @fasta_file.pos
         end
       end
-      # rescue EOFError
       return entry
       #return nil if entry.nil?
     end
     
-    def each_entry
-      while !@fasta_file.eof
-        yield self.entry()
+    def each
+    	# while file is not at the end of file, return Entry class
+    	while !@fasta_file.eof?
+        yield self.entry() if block_given?
       end
     end
     
@@ -79,7 +90,7 @@ module Fasta
     end
     
     private    
-    def index_positions()    
+    def index_headers()    
       # at position 0
       tmp_pos = @fasta_file.pos
       
@@ -93,7 +104,7 @@ module Fasta
           tmp_pos = @fasta_file.pos
         end
       end
-      # self.rewind     
+      @fasta_file.rewind
       return @index
     end
     
