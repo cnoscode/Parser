@@ -13,10 +13,16 @@ class TestFasta < Test::Unit::TestCase
     assert(p.check_sym)
   end
   
-  def test_read_entry
+  def test_read_first_entry
     p = Fasta::Parser.new("test/test.fasta")
     test_entry = ">gi|329299107|ref|NM_2005745.3Acc1| Def1 zgc:65895 (zgc:65895), mRNA\nAGCTCGGGGGCTCTAGCGATTTAAGGAGCGATGCGATCGAGCTGACCGTCGCG\n"
     assert_equal(test_entry, p.read_entry(0))
+  end
+  
+  def test_read_second_entry
+    p = Fasta::Parser.new("test/test.fasta")
+    test_entry = ">gi|329299107|ref|NM_2342343.3Acc2| Def2 zgc:65895 (zgc:65895), mRNA\nGTCGCTGGGTCGAAAAGTGGTGCTATATCGCGGCTCGCGTCGATGTCGCGATG\nCGTGCGCGCGAGAGCGCGCTATGATGAAAGGATGAGAGAG\n"
+    assert_equal(test_entry, p.read_entry(1))   
   end
   
   def test_next_entry
@@ -25,10 +31,24 @@ class TestFasta < Test::Unit::TestCase
      assert_equal(test_entry, p.next_entry)
   end
   
-  def test_each_entry
+  def test_first_entry_object
+     p = Fasta::Parser.new("test/test.fasta")
+     test_entry = ">gi|329299107|ref|NM_2005745.3Acc1| Def1 zgc:65895 (zgc:65895), mRNA\nAGCTCGGGGGCTCTAGCGATTTAAGGAGCGATGCGATCGAGCTGACCGTCGCG\n"
+     f = Fasta::Parser::Entry.new(test_entry)
+     
+     test_seq = "AGCTCGGGGGCTCTAGCGATTTAAGGAGCGATGCGATCGAGCTGACCGTCGCG"
+     test_gi = 329299107
+     test_acc = "NM_2005745.3Acc1"
+     test_desc = "gi|329299107|ref|NM_2005745.3Acc1| Def1 zgc:65895 (zgc:65895), mRNA"
+    
+     assert_equal(test_seq, )
+     assert_equal()
+     assert_equal()
+     assert_equal()
+     
 
   end
-  
+
   def test_rewind
     p = Fasta::Parser.new("test/test.fasta")
     test_pos = 0

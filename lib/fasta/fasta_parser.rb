@@ -43,10 +43,10 @@ module Fasta
       @curr_index += 1      
                      
       if @index[@curr_index].nil?
-      	entry = @fasta_file.read until @fasta_file.eof
+        entry = @fasta_file.read until @fasta_file.eof
       else
-      	length = @index[@curr_index] - @fasta_file.pos
-      	entry = @fasta_file.read(length)
+        length = @index[@curr_index] - @fasta_file.pos
+        entry = @fasta_file.read(length)
       end
        
       return entry
@@ -54,7 +54,7 @@ module Fasta
     
     # returns next entry in file
     def next_entry
-    	return nil if @fasta_file.eof?
+      return nil if @fasta_file.eof?
 
       entry = [nil,""]     
       entry[0] = @fasta_file.readline.chomp
@@ -75,8 +75,8 @@ module Fasta
     end
     
     def each
-    	# while file is not at the end of file, return Entry class
-    	while !@fasta_file.eof?
+      # while file is not at the end of file, return Entry class
+      while !@fasta_file.eof?
         yield self.entry() if block_given?
       end
     end
