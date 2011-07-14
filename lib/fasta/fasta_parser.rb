@@ -1,5 +1,6 @@
 module Fasta
   class Parser
+  	include Enumerable
     require 'lib/fasta/parser/entry'
       
     VERSION = "0.0.1"
@@ -74,15 +75,14 @@ module Fasta
       #return nil if entry.nil?
     end
     
-    def each
-      # while file is not at the end of file, return Entry class
-      while !@fasta_file.eof?
-        yield self.entry() if block_given?
-      end
+    def each(&block)
+	    while !@fasta_file.eof?
+	    	yield self.entry(n)
+	    end	    
     end
     
     def entry(n)
-      Fasta::Parser::Entry.new(self.read_entry(n))
+       Fasta::Parser::Entry.new(self.read_entry(n))
     end
     
     def entry_count
