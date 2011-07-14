@@ -1,9 +1,0 @@
-FASTA Parser
-
-The code attempts to parse information for a given FASTA file. 
-
-The program will essentially read in the title, accession, definition and sequence for each entry of the FASTA file. 
-
-For more information on a FASTA formatted file, check out: 
-http://www.ncbi.nlm.nih.gov/BLAST/fasta.shtml
-
