@@ -2,7 +2,7 @@ module Fasta
   class Parser
     class Entry 
       
-      attr_accessor :gi, :desc, :acc, :seq
+      attr_accessor :gi, :desc, :acc, :seq, :def
       
       def initialize(entry)
         # string check from read_entry
@@ -14,11 +14,12 @@ module Fasta
         @desc = ""
         @acc = ""
         @seq = ""
+        @def = ""
         parse(entry)
       end
       
       def to_s
-        formatted_entry =">#{@desc}\n"
+        formatted_entry =">gi|#{@gi}|ref|#{@acc}| #{@def}\n"
         byte_count = 0
         
         @seq.each_byte do |b|
@@ -40,12 +41,13 @@ module Fasta
         return nil if entry.nil?      
         entry[0].slice!(0)
         
-        @desc = entry[0]        
+        @desc = entry[0].to_sym        
         @gi = entry[0].split(/[|]/)[1].to_i
-        @acc = entry[0].split(/[|]/)[3] 
+        @def = entry[0].split(/[|]/)[4].to_sym
+        @acc = entry[0].split(/[|]/)[3].to_sym 
         
         entry.drop(1).each {|el| @seq += el}
-        @seq        
+        @seq = @seq.to_sym        
       end
       
     end
