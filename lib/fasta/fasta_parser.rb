@@ -1,11 +1,10 @@
 module Fasta
-  class Parser
-  	include Enumerable
+  class Parser 
     require 'lib/fasta/parser/entry'
       
     VERSION = "0.0.1"
     
-    attr_reader :fasta_file
+    attr_reader :fasta_file, :index
   
     def initialize fasta_file
       @fasta_file = File.open(fasta_file)
@@ -75,14 +74,14 @@ module Fasta
       #return nil if entry.nil?
     end
     
-    def each(&block)
+    def each
 	    while !@fasta_file.eof?
-	    	yield self.entry(n)
+	    	yield self.entry(n) if block_given?
 	    end	    
     end
     
     def entry(n)
-       Fasta::Parser::Entry.new(self.read_entry(n))
+   	 	Fasta::Parser::Entry.new(self.read_entry(n)) 
     end
     
     def entry_count

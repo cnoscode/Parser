@@ -58,8 +58,11 @@ class TestFasta < Test::Unit::TestCase
 	end
 	
 	def test_each
-		p = Fasta::Parser.new("test/test.fasta")	
-				
+		p = Fasta::Parser.new("test/test.fasta")
+#		f = File.open("test/test.fasta")
+		p.each do |entry|
+			assert_kind_of(Fasta::Parser::Entry, p.each)
+		end		
 	end
 
 end
