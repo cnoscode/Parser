@@ -75,13 +75,13 @@ module Fasta
     end
     
     def each
-    	while !@fasta_file.eof?
-    		yield self.entry(n) if block_given?
-    	end
+      while !@fasta_file.eof?
+        yield self.entry(n) if block_given?
+      end
     end
     
     def entry(n)
-    	Fasta::Parser::Entry.new(self.read_entry(n))
+      Fasta::Parser::Entry.new(self.read_entry(n))
     end
     
     def entry_count
